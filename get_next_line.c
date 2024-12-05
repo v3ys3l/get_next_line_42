@@ -6,102 +6,104 @@
 /*   By: vbicer <vbicer@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 00:33:16 by vbicer            #+#    #+#             */
-/*   Updated: 2024/12/03 10:57:53 by vbicer           ###   ########.fr       */
+/*   Updated: 2024/12/05 19:12:13 by vbicer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char *ft_read_file(int fd, char *str)
+static char	*ft_read_file(int fd, char *str)
 {
-	char *tmp;
-	int size;
+	char	*tmp;
+	int		size;
+
 	size = 1;
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if(!tmp)
-		return(NULL);
+	if (!tmp)
+		return (NULL);
 	while (!ft_strchr(str) && size != 0)
 	{
-		size = read(fd,tmp,BUFFER_SIZE);
-		if(size == -1)
+		size = read(fd, tmp, BUFFER_SIZE);
+		if (size == -1)
 		{
 			free(tmp);
-			return(NULL);
+			return (NULL);
 		}
 		tmp[size] = '\0';
-		str = ft_strjoin(str,tmp);
+		str = ft_strjoin(str, tmp);
 	}
 	free(tmp);
-	return(str);
-
+	return (str);
 }
-static char *ft_get_line(char *str)
-{
-	char *newline;
-	int i;
-	i = 0;
 
-	if(!str || str[0] == '\0')
-		return(NULL);
+static char	*ft_get_line(char *str)
+{
+	char	*newline;
+	int		i;
+
+	i = 0;
+	if (!str || str[0] == '\0')
+		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	newline = malloc(sizeof(char) * (i+2));
-	if(!newline)
-		return(NULL);
+	newline = malloc(sizeof(char) * (i + 2));
+	if (!newline)
+		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '\n')
 	{
 		newline[i] = str[i];
 		i++;
 	}
-	if(str[i] == '\n')
+	if (str[i] == '\n')
 	{
 		newline[i] = '\n';
 		i++;
 	}
 	newline[i] = '\0';
-	return(newline);
-
+	return (newline);
 }
-static char *ft_next_line(char *str)
+
+static char	*ft_next_line(char *str)
 {
-	char *nextline;
-	int i;
-	int j;
+	char	*nextline;
+	int		i;
+	int		j;
+
 	j = 0;
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if(!str[i])
+	if (!str[i])
 	{
 		free(str);
-		return(NULL);
+		return (NULL);
 	}
 	nextline = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-	if(!nextline)
-		return(NULL);
+	if (!nextline)
+		return (NULL);
 	i++;
-	while(str[i])
+	while (str[i])
 	{
 		nextline[j] = str[i];
 		j++;
 		i++;
 	}
 	nextline[j] = '\0';
-	free(str);
-	return(nextline);
+	return (free(str), nextline);
 }
-char *get_next_line(int fd)
-{
-	static char *str;
-	char		*line;
 
-	if(fd < 0 || BUFFER_SIZE <= 0)
-		return(NULL);
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*str;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	str = ft_read_file(fd, str);
-	if(!str)
+	if (!str)
 		return (NULL);
 	line = ft_get_line(str);
 	str = ft_next_line(str);
-	return(line);
+	return (line);
 }
