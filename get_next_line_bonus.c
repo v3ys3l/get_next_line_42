@@ -6,7 +6,7 @@
 /*   By: vbicer <vbicer@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 05:06:34 by vbicer            #+#    #+#             */
-/*   Updated: 2024/12/05 19:15:20 by vbicer           ###   ########.fr       */
+/*   Updated: 2024/12/05 21:16:36 by vbicer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	str[fd] = ft_read_file(fd, str[fd]);
-	if (!str)
+	if (!str[fd])
 		return (NULL);
 	line = ft_get_line(str[fd]);
 	str[fd] = ft_next_line(str[fd]);

@@ -6,7 +6,7 @@
 /*   By: vbicer <vbicer@student.42kocaeli.com.tr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 00:33:16 by vbicer            #+#    #+#             */
-/*   Updated: 2024/12/05 19:12:13 by vbicer           ###   ########.fr       */
+/*   Updated: 2024/12/05 20:57:23 by vbicer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ static char	*ft_read_file(int fd, char *str)
 	size = 1;
 	tmp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!tmp)
-		return (NULL);
+		return (free(tmp), NULL);
 	while (!ft_strchr(str) && size != 0)
 	{
 		size = read(fd, tmp, BUFFER_SIZE);
 		if (size == -1)
 		{
+			free(str);
 			free(tmp);
 			return (NULL);
 		}
@@ -48,7 +49,7 @@ static char	*ft_get_line(char *str)
 		i++;
 	newline = malloc(sizeof(char) * (i + 2));
 	if (!newline)
-		return (NULL);
+		return (free(str), NULL);
 	i = 0;
 	while (str[i] && str[i] != '\n')
 	{
@@ -81,7 +82,7 @@ static char	*ft_next_line(char *str)
 	}
 	nextline = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
 	if (!nextline)
-		return (NULL);
+		return (free(nextline), NULL);
 	i++;
 	while (str[i])
 	{
@@ -102,7 +103,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	str = ft_read_file(fd, str);
 	if (!str)
-		return (NULL);
+		return (free(str), NULL);
 	line = ft_get_line(str);
 	str = ft_next_line(str);
 	return (line);
